@@ -11,6 +11,7 @@ import com.itheima.reggie_take_out.service.MealService;
 import com.itheima.reggie_take_out.service.SetmealDishService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -83,5 +84,17 @@ public class SetmealController {
     public R<String> delete(@RequestParam List<Long> ids) {
         mealService.removeWithDish(ids);
         return R.success("delete success");
+    }
+
+    @GetMapping("/list")
+    @Cacheable(value = "setmealCache", key = "#setmeal.categoryId + '_' + #setmeal.status")
+    public R<List<Setmeal>> list(Setmeal setmeal) {
+        LambdaQueryWrapper<Setmeal> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(setmeal.getCategoryId() != null, Setmeal::getCategoryId, setmeal.getCategoryId());
+        wrapper.eq(setmeal.getStatus() != null, Setmeal::getStatus, setmeal.getStatus());
+        wrapper.orderByDesc(Setmeal::getUpdateTime);
+
+        List<Setmeal> list = mealService.list(wrapper);
+        return R.success(list);
     }
 }

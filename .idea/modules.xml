@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ReggieApplication.iml" filepath="$PROJECT_DIR$/ReggieApplication.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Reggie.iml" filepath="$PROJECT_DIR$/Reggie.iml" />
     </modules>
   </component>
 </project>
